@@ -1,5 +1,6 @@
-package br.com.broovie.persistencia;
+package br.com.broovie.dao;
 
+import br.com.broovie.contrato.OperacoesDao;
 import br.com.broovie.util.Uteis;
 
 import javax.persistence.EntityManager;
@@ -7,24 +8,27 @@ import javax.persistence.EntityTransaction;
 import java.io.Serializable;
 import java.util.List;
 
-public abstract class PersistenciaGenerica<T> implements Serializable {
+public abstract class DaoGenerico<T> implements OperacoesDao<T>, Serializable {
     private Class<T> clazz;
-    private EntityManager em;
+    protected EntityManager em;
 
     protected final void setClazz(Class<T> clazz) {
         this.clazz = clazz;
     }
 
-    public T findOne(int id) {
+    @Override
+    public T findOne(Long id) {
         em = Uteis.getEntityManager();
         return em.find(clazz, id);
     }
 
+    @Override
     public List<T> findAll() {
         em = Uteis.getEntityManager();
         return em.createQuery("FROM " + clazz.getName()).getResultList();
     }
 
+    @Override
     public void create(T entidade) {
         em = Uteis.getEntityManager();
         EntityTransaction tx = null;
@@ -41,6 +45,7 @@ public abstract class PersistenciaGenerica<T> implements Serializable {
         }
     }
 
+    @Override
     public void update(T entidade) {
         em = Uteis.getEntityManager();
         EntityTransaction tx = null;
@@ -57,7 +62,8 @@ public abstract class PersistenciaGenerica<T> implements Serializable {
         }
     }
 
-    public void remove(T entidade) {
+    @Override
+    public void delete(T entidade) {
         em = Uteis.getEntityManager();
         EntityTransaction tx = null;
         try {
@@ -71,9 +77,5 @@ public abstract class PersistenciaGenerica<T> implements Serializable {
             }
             throw new RuntimeException(e);
         }
-    }
-
-    public void remove(int id) {
-        remove(findOne(id));
     }
 }

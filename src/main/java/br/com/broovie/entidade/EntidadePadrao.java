@@ -14,5 +14,5 @@ import java.io.Serializable;
 public class EntidadePadrao implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private Long id;
 }
