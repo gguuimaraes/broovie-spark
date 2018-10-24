@@ -1,6 +1,8 @@
 package br.com.broovie.api;
 
+import br.com.broovie.rota.RotaFilme;
 import br.com.broovie.rota.RotaUsuario;
+import br.com.broovie.util.Uteis;
 import com.google.gson.Gson;
 
 import static spark.Spark.before;
@@ -11,14 +13,16 @@ public class Api {
     final static String TOKEN = "token";
 
     public static void main(String[] args) {
+        Uteis.getEntityManager();
         path("/api", () -> {
-            /*before("/*", (request, response) -> {
+            before("/*", (request, response) -> {
                 if (!TOKEN.equals(request.headers("Authorization"))) {
                     halt(401, "Sessao não autorizada. Favor informar TOKEN de acesso.");
                 }
-            });*/
+            });
             path("/usuario", () -> {
                 RotaUsuario.getInstance();
+                RotaFilme.getInstance();
             });
         });
     }

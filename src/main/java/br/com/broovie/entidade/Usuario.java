@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Builder
@@ -20,13 +21,10 @@ import java.util.Date;
 public class Usuario extends EntidadePadrao {
     @Column(length = 70)
     private String nome;
-
     @Column(length = 30, unique = true)
     private String nomeUsuario;
-
     @Column(length = 40)
     private String email;
-
     @Column
     @Temporal(TemporalType.DATE)
     private Date dataNascimento;
@@ -40,7 +38,10 @@ public class Usuario extends EntidadePadrao {
     */
     @Column
     private String pais;
-
     @Column
     private String senha;
+    @ManyToMany
+    private List<Usuario> amigos;
+    @ManyToMany
+    private List<Genero> generos;
 }
